@@ -12,12 +12,7 @@
     <div class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Urutkan
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">A-Z</a></li>
-                </ul>
+                <i>*min() data yang sama adalah 3</i>
               </div>
             <form class="d-md-flex d-sm-none" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

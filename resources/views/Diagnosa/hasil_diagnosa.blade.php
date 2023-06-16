@@ -34,13 +34,13 @@
                 <th class="col-3">gejala</th>
                 <th>umur</th>
                 <th class="col-1">jenis</th>
-                <th>cara penangananan</th>
                 <th>tanggal</th>
+                <th>Waktu Perbarui</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($tb_hasil as $hasil)
+            @foreach ($tb_hasil->sortByDesc('id_diagnosa') as $hasil)
                 <tr>
                     <td>{{ $hasil->id_diagnosa }}</td>
                     <td>
@@ -72,10 +72,10 @@
                     </td>
                     <td>{{ $hasil->umur_anak }}</td>
                     <td>{{ $hasil->nama_jenis }}</td>
-                    <td>{{ $hasil->cara_penanganan }}</td>
                     <td>{{ $hasil->tanggal }}</td>
+                    <td>{{ $hasil->updated_at }}</td>
                     <td class="text-center">
-                        <a href="{{ route('hasil.edit', $hasil->id_diagnosa) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('hasil.tampil', $hasil->id_diagnosa) }}" class="btn btn-primary">Detail</a>
                     </td>
                 </tr>
             @endforeach

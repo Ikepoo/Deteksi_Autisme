@@ -55,6 +55,7 @@ Route::resource('hasil_diagnosa', DC_hasil::class)->names([
     'show' => 'hasil.tampil'
 ]);
 Route::get('/report_diagnosa', [DC_hasil::class, 'generatePDF'])->name('pdf_diagnosa');
+Route::get('/report_byId/{id_diagnosa}', [DC_hasil::class, 'generatePDFbyId'])->name('pdf_diagnosaById');
 
 
 Route::get('/riwayat', [DC_riwayat::class, 'tampil'])->name('riwayat_diagnosa');

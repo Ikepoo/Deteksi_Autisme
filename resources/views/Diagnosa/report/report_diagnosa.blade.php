@@ -13,7 +13,7 @@
             border: 1px solid black;
             padding-left: 1rem;
             padding-right: 1rem;
-            font-size: 1.2rem
+            font-size: .8rem
         }
         body {
             align-content: center;
@@ -27,61 +27,53 @@
 <body>
     <h1>Riwayat hasil Diagnosa</h1>
     <table class="table table-bordered">
-        @foreach ($tb_hasil as $hasil)
+        
         <thead class="table-primary text-center">
             <tr>
                 <th>id</th>
+                <th class="col-3">gejala</th>
                 <th>umur</th>
-                <th>jenis</th>
+                <th class="col-1">jenis</th>
                 <th>tanggal</th>
+                <th>Waktu Perbarui</th>
             </tr>
         </thead>
         <tbody>
-            
-                <tr>
-                    <td rowspan="5">{{ $hasil->id_diagnosa }}</td>
-                    <td>{{ $hasil->umur_anak }}</td>
-                    <td>{{ $hasil->nama_jenis }}</td>
-                    <td>{{ $hasil->tanggal }}</td>
-                </tr>
-                <tr>
-                    <th colspan="3">gejala</th>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
-                            @if ($hasil->id_gejala1 == $id_gejala1)
-                                {{ $nama_gejala }}, 
-                            @endif
-                        @endforeach
-                        @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
-                            @if ($hasil->id_gejala2 == $id_gejala1)
-                                {{ $nama_gejala }}, 
-                            @endif
-                        @endforeach
-                        @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
-                            @if ($hasil->id_gejala3 == $id_gejala1)
-                                {{ $nama_gejala }}, 
-                            @endif
-                        @endforeach
-                        @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
-                            @if ($hasil->id_gejala4 == $id_gejala1)
-                                {{ $nama_gejala }}, 
-                            @endif
-                        @endforeach
-                        @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
-                            @if ($hasil->id_gejala5 == $id_gejala1)
-                                {{ $nama_gejala }}, 
-                            @endif
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="3">cara penangananan</th>
-                </tr>
-                <tr>
-                    <td colspan="3">{{ $hasil->cara_penanganan }}</td>
-                </tr>
+            @foreach ($tb_hasil as $hasil)
+            <tr>
+                <td>{{ $hasil->id_diagnosa }}</td>
+                <td>
+                    @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
+                        @if ($hasil->id_gejala1 == $id_gejala1)
+                            {{ $nama_gejala }}, 
+                        @endif
+                    @endforeach
+                    @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
+                        @if ($hasil->id_gejala2 == $id_gejala1)
+                            {{ $nama_gejala }}, 
+                        @endif
+                    @endforeach
+                    @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
+                        @if ($hasil->id_gejala3 == $id_gejala1)
+                            {{ $nama_gejala }}, 
+                        @endif
+                    @endforeach
+                    @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
+                        @if ($hasil->id_gejala4 == $id_gejala1)
+                            {{ $nama_gejala }}, 
+                        @endif
+                    @endforeach
+                    @foreach ($tb_gejala as $id_gejala1 => $nama_gejala)
+                        @if ($hasil->id_gejala5 == $id_gejala1)
+                            {{ $nama_gejala }}
+                        @endif
+                    @endforeach
+                </td>
+                <td>{{ $hasil->umur_anak }}</td>
+                <td>{{ $hasil->nama_jenis }}</td>
+                <td>{{ $hasil->tanggal }}</td>
+                <td>{{ $hasil->updated_at }}</td>
+            </tr>
             
         </tbody>
         @endforeach

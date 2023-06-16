@@ -73,6 +73,7 @@ class DC_hasil extends Controller
         foreach ($id_aturan5 as $id) {
             $id_aturan5 = $id;
         }
+
         $id_aturan = [$id_aturan1, $id_aturan2, $id_aturan3, $id_aturan4, $id_aturan5];
         $id_aturan = array_count_values($id_aturan);
         arsort($id_aturan);
@@ -158,7 +159,12 @@ class DC_hasil extends Controller
         // menambahkan ke inputan
         $request->merge(['id_aturan' => $id_aturan, 'nama_jenis' =>  $nama_jenis, 'cara_penanganan' => $cara_penanganan]);
 
-        return redirect()->route('hasil')->with('delete', 'jdata telah bertambah');
+
+        DM_hasil::create($request->all());
+        // $id_diagnosa = $request->input('id_diagnosa');
+        // return redirect()->route('hasil.tampil', $request->id_diagnosa)->with('success', 'telah menambahkan hasil diagnosa');
+        return redirect()->route('hasil')->with('success', 'telah menambahkan hasil diagnosa');
+
 
         // return redirect()->route('hasil.tampil', 'id_diagnosa');
         // return ('Diagnosa.form.preview');
@@ -167,13 +173,12 @@ class DC_hasil extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        //
-        // $tb_hasil = DM_hasil::all();
-        // // $tb_gejala = DM_hasil::all();
-        // $tb_gejala = (new AM_gejala)->getDropdownOptions();
-        // return view('Diagnosa.form.preview', compact(['tb_hasil', 'tb_gejala']));
+        $tb_hasil = DM_hasil::where('id_diagnosa', $id)->get();
+        // $tb_gejala = DM_hasil::all();
+        $tb_gejala = (new AM_gejala)->getDropdownOptions();
+        return view('Diagnosa.form.preview', compact(['tb_hasil', 'tb_gejala']));
     }
 
     /**
@@ -189,7 +194,7 @@ class DC_hasil extends Controller
         $tb4 = (new AM_aturan)->getDropdownOptions4();
         $tb5 = (new AM_aturan)->getDropdownOptions5();
         $tb_gejala = (new AM_gejala)->getDropdownOptions();
-        return view('Diagnosa.form.form_edit_hasil', compact(['tb_hasil', 'tb1', 'tb2', 'tb3', 'tb4', 'tb5', 'tb_gejala']));
+        return view('Diagnosa.form.edit.form_edit_hasil', compact(['tb_hasil', 'tb1', 'tb2', 'tb3', 'tb4', 'tb5', 'tb_gejala']));
     }
 
     /**
@@ -199,15 +204,22 @@ class DC_hasil extends Controller
     {
         //
         $this->validate($request, [
-            'id_aturan' => 'required',
             'id_gejala1' => 'required',
             'id_gejala2' => 'required',
             'id_gejala3' => 'required',
             'id_gejala4' => 'required',
             'id_gejala5' => 'required',
-            'id_penanganan' => 'required',
-            'add_time' => 'required'
+            'umur_anak' => 'required',
+            'tanggal' => 'required'
         ]);
+        $id_aturan = $this->forwardChaining($request);
+        // mencari nama_jenis   
+        $nama_jenis = $this->cariJenis($request);
+        // mencari cara_penanganan
+        $cara_penanganan = $this->cariPenanganan($request);
+        // menambahkan ke inputan
+        $request->merge(['id_aturan' => $id_aturan, 'nama_jenis' =>  $nama_jenis, 'cara_penanganan' => $cara_penanganan]);
+
         $tb_hasil = DM_hasil::where('id_diagnosa', $hasil);
         $tb_hasil->update($request->except(['_token', '_method']));
         return redirect()->route('hasil')->with('success', 'telah diperbaharui jadwal');
@@ -216,7 +228,7 @@ class DC_hasil extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $hasil)
+    public function destroy(int $hasil)
     {
         //
         $tb_hasil = DM_hasil::where('id_diagnosa', $hasil);
@@ -229,6 +241,15 @@ class DC_hasil extends Controller
         // $tb_gejala = DM_hasil::all();
         $tb_gejala = (new AM_gejala)->getDropdownOptions();
         $pdf = PDF::loadView('Diagnosa.report.report_diagnosa', compact(['tb_hasil', 'tb_gejala']));
+
+        return $pdf->stream('report_diagnosa.pdf');
+    }
+    public function generatePDFbyId(int $id)
+    {
+        $tb_hasil = DM_hasil::where('id_diagnosa', $id)->get();
+
+        $tb_gejala = (new AM_gejala)->getDropdownOptions();
+        $pdf = PDF::loadView('Diagnosa.report.report_byId', compact(['tb_hasil', 'tb_gejala']));
 
         return $pdf->stream('report_diagnosa.pdf');
     }
